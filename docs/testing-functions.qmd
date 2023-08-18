@@ -43,3 +43,15 @@ expect_type(mean_range(mtcars), "double")
 # the minimum mean_range value for mtcars should always be less than or equal to the maximum mean_range value of mtcars. Since we set the return to return the minimum first, [1] is the minimum and [2] is the maximum value
 expect_true(mean_range(mtcars)[1] <=mean_range(mtcars)[2])
 ```
+
+```{r}
+source(here::here("src","name_cart_function.R"))
+
+name_cart(food = "enchilada", animal = "hawk")
+```
+
+```{r}
+source(here::here("src","cork_oak_growth.R"))
+
+height_t2(2,3,4)
+```
