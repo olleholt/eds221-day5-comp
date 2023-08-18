@@ -43,16 +43,21 @@ Add line-by-line comments wheres prompted in the code below, explaining what eac
 # ------ WHAT HAPPENS HERE? ------ #
 # ------ comment line-by-line ---- #
 
-# The line below...
+# The line below... create a sequence from 0 to 8 years in increments of 1 year
 time_yr <- seq(from = 0, to = 8, by = 1)
 
-# The line below...
+# The line below... create a matrix for the projection years. With length of the
+# initial population vector for columns and the time vector for rows.
 proj_year <- matrix(ncol = length(fish_year0), nrow = length(time_yr))
 
-# The line below...
+# The line below... populates the empty matrix (proj_year) with the initial
+# populations from fish_year0
 proj_year[1, ] <- fish_year0
 
-# The for loop below...
+# The for loop below... creating a for loop with length of 2 to the length of 
+# the time_year vector. Filling the proj_year matrix with the dot product of
+# the initial leslie matrix with the proj_year data from the previous year
+# (i-1)
 for (i in 2:length(time_yr)) {
   proj_year[i,] <- fish_leslie %*% proj_year[i-1,]
 }
@@ -60,9 +65,12 @@ for (i in 2:length(time_yr)) {
 
 # The rest is wrangling & visualization (run to check it out):
 colnames(proj_year) <- c("eggs", "fry", "juvenile", "adult")
+#reassigning the column names in the matrix
 
-proj_df <- data.frame(time_yr, proj_year) %>% 
+proj_df <- data.frame(time_yr, proj_year) %>% #populate each row with the year
   pivot_longer(cols = -time_yr, names_to = "lifestage", values_to = "stage_population")
+#pivot_longer ceates a df with teo columns, all lifestages are in one column and
+# all populations are in the other column
 
 ggplot(data = proj_df, aes(x = time_yr, y = stage_population)) +
   geom_line(aes(color = lifestage)) +
@@ -71,3 +79,14 @@ ggplot(data = proj_df, aes(x = time_yr, y = stage_population)) +
 ```
 
 Test different combinations of survival / reproduction and starting population structures to see what happens! 
+
+```{r}
+demo <- data.frame( year = c(1995, 2000, 2005),
+            cats = c(2, 4, 6),
+            dogs = c(10, 14, 12))
+
+demo_longer <- demo %>% 
+  pivot_longer(cols = c(cats, dogs), names_to = "species", values_to = "count")
+
+```
+

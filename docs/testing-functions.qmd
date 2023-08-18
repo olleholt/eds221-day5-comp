@@ -1,0 +1,45 @@
+---
+title: "testing-functions"
+format: html
+editor: visual
+---
+
+```{r}
+library(testthat)
+library(devtools)
+library(remotes)
+```
+
+```{r}
+mean_range <- function(df) {
+  col_means <- apply(X = df, MARGIN = 2, FUN = mean, na.rm = TRUE)
+  col_mean_max <- max(col_means)
+  col_mean_min <- min(col_means)
+  return(c(col_mean_min, col_mean_max))
+}
+```
+
+```{r}
+mean_range(mtcars)
+
+```
+
+```{r}
+mean_range(faithful)
+```
+
+```{r}
+
+expect_length(mean_range(mtcars),2)
+
+expect_length(mean_range(faithful), 2)
+```
+
+```{r}
+expect_type(mean_range(mtcars), "double")
+```
+
+```{r}
+# the minimum mean_range value for mtcars should always be less than or equal to the maximum mean_range value of mtcars. Since we set the return to return the minimum first, [1] is the minimum and [2] is the maximum value
+expect_true(mean_range(mtcars)[1] <=mean_range(mtcars)[2])
+```
